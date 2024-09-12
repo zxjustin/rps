@@ -1,5 +1,7 @@
 let humanScore = 0;
 let computerScore = 0;
+let roundCount = 0;
+const maxRounds = 5;
 
 // Computer function
 function getComputerChoice(x = Math.floor(Math.random() * 3)) {
@@ -30,17 +32,32 @@ function playRound(humanChoice, computerChoice) {
     computerScore++;
   }
   console.log(`The Score now is Human:${humanScore} to Computer:${computerScore}`);
+
+  roundCount++
+  console.log(`${roundCount} rounds played`);
+  if (roundCount === maxRounds)
+    {
+      declareWinner();
+    }
 }
 
+function declareWinner(){
+    if (humanScore > computerScore) {
+      console.log("Congratulations You Won! Easy game.");
+  } else if (computerScore > humanScore) {
+      console.log("You Lost! The computer won how can you lose.");
+  } else {
+      console.log("TIED WITH A COMPUTER!");
+  }
+}
 function playGame() {
   //Reset score
   humanScore = 0;
   computerScore = 0;
-
-  const computerSelection = getComputerChoice();
+  roundCount = 0 ;
   
   // This function just starts the game loop, logic will be passed to `playRound` directly from button clicks now.
-  console.log("Game has started!");
+  console.log("Game has started! Playing 5 rounds");
 }
 
 // Adding the event listeners to the RPS buttons
@@ -48,9 +65,11 @@ const rpsButton = document.querySelectorAll(".rps-btn");
 
 rpsButton.forEach((button) => {
   button.addEventListener("click", () => {
+    if (roundCount < maxRounds){
     const playSelection = button.id; // Get the player choice from button id
     const computerSelection = getComputerChoice(); // Get the computer's choice
     playRound(playSelection, computerSelection); // Play a round with both selections
+    }
   });
 });
 
